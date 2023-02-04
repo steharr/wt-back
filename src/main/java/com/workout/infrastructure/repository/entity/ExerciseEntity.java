@@ -17,8 +17,8 @@ public class ExerciseEntity {
     private Long exerciseId;
 
     @ManyToOne
-    @JoinColumn(name = "workoutId")
-    private WorkoutEntity workout;
+    @JoinColumn(name="workoutId")
+    private WorkoutEntity workoutEntity;
 
     private String exerciseName;
     private Long sets;

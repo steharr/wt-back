@@ -21,7 +21,7 @@ public class WorkoutEntity {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long workoutId;
 
-    @OneToMany(mappedBy = "workout")
+    @OneToMany(mappedBy = "workoutEntity")
     private List<ExerciseEntity> exercises;
 
     private Date date;

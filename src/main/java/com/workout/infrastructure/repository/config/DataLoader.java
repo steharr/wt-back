@@ -10,8 +10,6 @@ import org.springframework.boot.ApplicationRunner;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
-
 @Component
 public class DataLoader implements ApplicationRunner{
 
@@ -22,27 +20,23 @@ public class DataLoader implements ApplicationRunner{
 
     @Override
     public void run(ApplicationArguments args) throws Exception {
-
-    var ex1 = new ExerciseEntity();
-
-    ex1.setExerciseId(1L);
-    ex1.setExerciseName("test");
-
-    excerciseRepository.save(ex1);
-
-    var wk1 = new WorkoutEntity();
-//    wk1.setDate(Date.valueOf("12-01-2023"));
-    wk1.setWorkoutId(1L);
-    wk1.setExercises(List.of(ex1));
-
-    workoutRepository.save(wk1);
-
-this.test();
+        save();
     }
 
     @Transactional
-    private void test(){
-    var wk2 = workoutRepository.findAll();
+    void save(){
+    var wk1 = new WorkoutEntity();
+    wk1.setWorkoutId(1L);
+    workoutRepository.save(wk1);
+
+    var ex1 = new ExerciseEntity();
+    ex1.setExerciseId(1L);
+    ex1.setExerciseName("test");
+    ex1.setWorkoutEntity(wk1);
+    excerciseRepository.save(ex1);
+
 
     }
+
+
 }
