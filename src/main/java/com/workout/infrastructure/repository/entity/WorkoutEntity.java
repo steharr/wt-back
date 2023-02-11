@@ -6,11 +6,11 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.sql.Date;
+import java.util.Date;
 import java.util.List;
 
 
-@Table(name="WORKOUTS")
+@Table(name = "WORKOUTS")
 @Entity
 @Data
 @AllArgsConstructor
@@ -21,8 +21,9 @@ public class WorkoutEntity {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long workoutId;
 
-    @OneToMany(mappedBy = "workoutEntity")
+    @OneToMany(mappedBy = "workout", cascade = CascadeType.ALL)
     private List<ExerciseEntity> exercises;
 
+    @Temporal(TemporalType.DATE)
     private Date date;
 }

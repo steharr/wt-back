@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class Exercise {
 
+    
     private String exercise;
     private Long sets;
     private Long reps;

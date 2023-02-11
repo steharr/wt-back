@@ -2,41 +2,45 @@ package com.workout.application;
 
 import com.workout.domain.model.Exercise;
 import com.workout.domain.model.Workout;
+import com.workout.infrastructure.repository.ExerciseRepository;
 import com.workout.infrastructure.repository.WorkoutRepository;
 import com.workout.infrastructure.repository.entity.ExerciseEntity;
 import com.workout.infrastructure.repository.entity.WorkoutEntity;
+import com.workout.infrastructure.repository.map.ExerciseMapper;
+import com.workout.infrastructure.repository.map.WorkoutMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class WorkoutService {
-
-
     @Autowired
     WorkoutRepository workoutRepository;
+    @Autowired
+    ExerciseRepository exerciseRepository;
+    @Autowired
+    WorkoutMapper workoutMapper;
+    @Autowired
+    ExerciseMapper exerciseMapper;
 
     @Transactional
-    public Workout getWorkout(){
-        List<WorkoutEntity> workoutEntities = workoutRepository.findAll();
-        return this.transformWorkoutEntity(workoutEntities.get(0));
+    public Workout getWorkout() {
+        List<WorkoutEntity> entities = workoutRepository.findAll();
+        return workoutMapper.entityToModel(entities.get(0));
     }
 
-    public void saveWorkout(Workout workoutDTO){
-
+    @Transactional
+    public void saveWorkout(Workout workout) {
+        WorkoutEntity entity = workoutMapper.modelToEntity(workout);
+        workoutRepository.saveAndFlush(entity);
     }
 
-    private Workout transformWorkoutEntity(WorkoutEntity ent){
-        return new Workout(ent.getWorkoutId(),
-                ent.getExercises().stream().map(this::transformExceriseEntity).collect(Collectors.toList()),
-                null,1);
+    @Transactional
+    public void saveExercise(Exercise exercise) {
+        ExerciseEntity entity = exerciseMapper.modelToEntity(exercise);
+        exerciseRepository.saveAndFlush(entity);
     }
 
-    private Exercise transformExceriseEntity(ExerciseEntity ent){
-
-        return new Exercise(ent.getExerciseName(), ent.getSets(), ent.getReps());
-    }
 }
