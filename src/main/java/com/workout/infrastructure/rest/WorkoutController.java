@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/workout")
+@CrossOrigin(origins = "http://localhost:4200")
 public class WorkoutController {
 
     @Autowired
@@ -14,12 +15,12 @@ public class WorkoutController {
 
 
     @GetMapping()
-    public Workout getWorkout(){
+    public Workout getWorkout() {
         return this.workoutService.getWorkout();
     }
 
     @PostMapping()
-    public void saveWorkout(@RequestBody Workout workout){
+    public void saveWorkout(@RequestBody Workout workout) {
         this.workoutService.saveWorkout(workout);
     }
 }
