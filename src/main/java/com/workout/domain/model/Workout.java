@@ -11,10 +11,8 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Workout {
-
     private Long workoutId;
     private List<Exercise> exercise;
     private Date date;
     private Integer rating;
-
 }

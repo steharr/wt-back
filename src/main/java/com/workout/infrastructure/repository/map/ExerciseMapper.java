@@ -12,7 +12,7 @@ public class ExerciseMapper implements Mapper<Exercise, ExerciseEntity> {
 
     @Override
     public Exercise entityToModel(ExerciseEntity ent) {
-        return new Exercise(ent.getExerciseName(), ent.getSets(), ent.getReps());
+        return new Exercise(ent.getExerciseName(), ent.getSets(), ent.getReps(), ent.getWeight());
     }
 
     @Override
@@ -21,6 +21,7 @@ public class ExerciseMapper implements Mapper<Exercise, ExerciseEntity> {
         ex.setExerciseName(model.getExercise());
         ex.setReps(model.getReps());
         ex.setSets(model.getSets());
+        ex.setWeight(model.getWeight());
         return ex;
     }
 }
