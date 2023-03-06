@@ -1,4 +1,4 @@
-package com.workout.domain.model;
+package com.workout.session.domain.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

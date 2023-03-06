@@ -1,13 +1,13 @@
-package com.workout.application;
+package com.workout.session.application;
 
-import com.workout.domain.model.Exercise;
-import com.workout.domain.model.Workout;
-import com.workout.infrastructure.repository.ExerciseRepository;
-import com.workout.infrastructure.repository.WorkoutRepository;
-import com.workout.infrastructure.repository.entity.ExerciseEntity;
-import com.workout.infrastructure.repository.entity.WorkoutEntity;
-import com.workout.infrastructure.repository.map.ExerciseMapper;
-import com.workout.infrastructure.repository.map.WorkoutMapper;
+import com.workout.session.domain.model.Exercise;
+import com.workout.session.domain.model.Workout;
+import com.workout.session.infrastructure.repository.ExerciseRepository;
+import com.workout.session.infrastructure.repository.WorkoutRepository;
+import com.workout.session.infrastructure.repository.entity.ExerciseEntity;
+import com.workout.session.infrastructure.repository.entity.WorkoutEntity;
+import com.workout.session.infrastructure.repository.map.ExerciseMapper;
+import com.workout.session.infrastructure.repository.map.WorkoutMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

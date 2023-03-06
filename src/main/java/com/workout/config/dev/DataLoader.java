@@ -1,6 +1,6 @@
-package com.workout.infrastructure.repository.config;
+package com.workout.config.dev;
 
-import com.workout.application.WorkoutService;
+import com.workout.session.application.WorkoutService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;

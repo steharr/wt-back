@@ -1,7 +1,7 @@
-package com.workout.infrastructure.rest;
+package com.workout.session.infrastructure.rest;
 
-import com.workout.application.WorkoutService;
-import com.workout.domain.model.Workout;
+import com.workout.session.application.WorkoutService;
+import com.workout.session.domain.model.Workout;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;

@@ -1,8 +1,8 @@
-package com.workout.infrastructure.repository.map;
+package com.workout.session.infrastructure.repository.map;
 
-import com.workout.domain.model.Workout;
-import com.workout.infrastructure.repository.entity.ExerciseEntity;
-import com.workout.infrastructure.repository.entity.WorkoutEntity;
+import com.workout.session.domain.model.Workout;
+import com.workout.session.infrastructure.repository.entity.ExerciseEntity;
+import com.workout.session.infrastructure.repository.entity.WorkoutEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 

@@ -1,4 +1,4 @@
-package com.workout.infrastructure.repository.map;
+package com.workout.session.infrastructure.repository.map;
 
 public interface Mapper<M, E> {
 

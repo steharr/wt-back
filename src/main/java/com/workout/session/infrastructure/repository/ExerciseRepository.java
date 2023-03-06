@@ -1,6 +1,6 @@
-package com.workout.infrastructure.repository;
+package com.workout.session.infrastructure.repository;
 
-import com.workout.infrastructure.repository.entity.ExerciseEntity;
+import com.workout.session.infrastructure.repository.entity.ExerciseEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

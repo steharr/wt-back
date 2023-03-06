@@ -1,7 +1,7 @@
-package com.workout.infrastructure.repository.map;
+package com.workout.session.infrastructure.repository.map;
 
-import com.workout.domain.model.Exercise;
-import com.workout.infrastructure.repository.entity.ExerciseEntity;
+import com.workout.session.domain.model.Exercise;
+import com.workout.session.infrastructure.repository.entity.ExerciseEntity;
 import org.springframework.stereotype.Component;
 
 @Component

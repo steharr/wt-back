@@ -1,4 +1,4 @@
-package com.workout.infrastructure.repository.entity;
+package com.workout.session.infrastructure.repository.entity;
 
 
 import jakarta.persistence.*;
