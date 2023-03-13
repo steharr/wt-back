@@ -35,3 +35,4 @@ build/
 ### Project ###
 *.properties
 !dev.properties
+*.orig
