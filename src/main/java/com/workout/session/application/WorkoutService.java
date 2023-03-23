@@ -32,15 +32,6 @@ public class WorkoutService {
     ExerciseMapper exerciseMapper;
 
     @Transactional
-    public Workout getWorkout() {
-        log.info("Getting workout entities...begin");
-//        TODO: add search by id for specific user workouts
-        List<WorkoutEntity> entities = workoutRepository.findAll();
-        log.info("Getting workout entities...complete");
-        return workoutMapper.entityToModel(entities.get(0));
-    }
-
-    @Transactional
     public List<Workout> getWorkouts() {
         log.info("Getting workout entities...begin");
 //        TODO: add search by id for specific user workouts

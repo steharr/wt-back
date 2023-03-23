@@ -20,12 +20,6 @@ public class WorkoutController {
     @Autowired
     private WorkoutService workoutService;
 
-
-    @GetMapping()
-    public Workout workout() {
-        return this.workoutService.getWorkout();
-    }
-
     @PostMapping()
     public void workout(@RequestBody Workout workout) {
         log.info("Saving workout...begin");
