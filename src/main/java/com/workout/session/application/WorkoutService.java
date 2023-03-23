@@ -70,4 +70,15 @@ public class WorkoutService {
         return entity.map(workoutEntity -> new WorkoutAnalysis(workoutMapper.entityToModel(workoutEntity)).toDTO());
     }
 
+
+    @Transactional
+    public boolean deleteWorkout(Long id) {
+        if (workoutRepository.findById(id).isPresent()) {
+            workoutRepository.deleteById(id);
+            return true;
+        } else {
+            return false;
+        }
+    }
+
 }

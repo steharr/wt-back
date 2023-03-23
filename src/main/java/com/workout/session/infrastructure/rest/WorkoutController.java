@@ -33,13 +33,23 @@ public class WorkoutController {
         log.info("Saving workout...complete");
     }
 
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Boolean> deleteWorkout(@PathVariable Long id) {
+        try {
+            return ResponseEntity.ok(this.workoutService.deleteWorkout(id));
+        } catch (Exception e) {
+            log.error("Error deleting workout id: {}, Cause:{}", id, e.getMessage());
+            throw new RuntimeException(e.getMessage());
+        }
+    }
+
     @GetMapping("home")
     public ResponseEntity<List<Workout>> home() {
         try {
             return ResponseEntity.ok(this.workoutService.getWorkouts());
         } catch (Exception e) {
             log.error("Error retrieving data: {}", e.getMessage());
-            return ResponseEntity.internalServerError().build();
+            throw new RuntimeException(e.getMessage());
         }
     }
 
