@@ -1,5 +1,6 @@
 package com.workout.session.application;
 
+import com.workout.session.domain.dto.WorkoutAnalysisDTO;
 import com.workout.session.domain.model.Exercise;
 import com.workout.session.domain.model.Workout;
 import com.workout.session.domain.model.WorkoutAnalysis;
@@ -64,12 +65,9 @@ public class WorkoutService {
     }
 
     @Transactional
-    public Optional<WorkoutAnalysis> getWorkoutAnalysis(Long id) {
-        log.info("Getting workout analysis for id {}...begin", id);
-//        TODO: add search by id for specific user workouts
-        Optional<WorkoutEntity> e = workoutRepository.findById(id);
-        log.info("Getting workout analysis for id {}...complete", id);
-        return e.map(workoutEntity -> new WorkoutAnalysis(workoutMapper.entityToModel(workoutEntity)));
+    public Optional<WorkoutAnalysisDTO> getWorkoutAnalysis(Long id) {
+        Optional<WorkoutEntity> entity = workoutRepository.findById(id);
+        return entity.map(workoutEntity -> new WorkoutAnalysis(workoutMapper.entityToModel(workoutEntity)).toDTO());
     }
 
 }

@@ -1,8 +1,8 @@
 package com.workout.session.infrastructure.rest;
 
 import com.workout.session.application.WorkoutService;
+import com.workout.session.domain.dto.WorkoutAnalysisDTO;
 import com.workout.session.domain.model.Workout;
-import com.workout.session.domain.model.WorkoutAnalysis;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -35,12 +35,17 @@ public class WorkoutController {
 
     @GetMapping("home")
     public ResponseEntity<List<Workout>> home() {
-        return ResponseEntity.ok(this.workoutService.getWorkouts());
+        try {
+            return ResponseEntity.ok(this.workoutService.getWorkouts());
+        } catch (Exception e) {
+            log.error("Error retrieving data: {}", e.getMessage());
+            return ResponseEntity.internalServerError().build();
+        }
     }
 
     @GetMapping("analysis/{id}")
-    public ResponseEntity<WorkoutAnalysis> analysis(@PathVariable Long id) {
-        Optional<WorkoutAnalysis> analysis = workoutService.getWorkoutAnalysis(id);
+    public ResponseEntity<WorkoutAnalysisDTO> analysis(@PathVariable Long id) {
+        Optional<WorkoutAnalysisDTO> analysis = workoutService.getWorkoutAnalysis(id);
         return analysis.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.badRequest().build());
     }
 }
