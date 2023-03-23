@@ -1,7 +1,9 @@
 package com.workout.session.application;
 
+import com.workout.session.domain.dto.WorkoutAnalysisDTO;
 import com.workout.session.domain.model.Exercise;
 import com.workout.session.domain.model.Workout;
+import com.workout.session.domain.model.WorkoutAnalysis;
 import com.workout.session.infrastructure.repository.ExerciseRepository;
 import com.workout.session.infrastructure.repository.WorkoutRepository;
 import com.workout.session.infrastructure.repository.entity.ExerciseEntity;
@@ -14,6 +16,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -28,12 +32,14 @@ public class WorkoutService {
     ExerciseMapper exerciseMapper;
 
     @Transactional
-    public Workout getWorkout() {
+    public List<Workout> getWorkouts() {
         log.info("Getting workout entities...begin");
+//        TODO: add search by id for specific user workouts
         List<WorkoutEntity> entities = workoutRepository.findAll();
         log.info("Getting workout entities...complete");
-        return workoutMapper.entityToModel(entities.get(0));
+        return entities.stream().map(ent -> workoutMapper.entityToModel(ent)).collect(Collectors.toList());
     }
+
 
     @Transactional
     public void saveWorkout(Workout workout) {
@@ -47,6 +53,23 @@ public class WorkoutService {
     public void saveExercise(Exercise exercise) {
         ExerciseEntity entity = exerciseMapper.modelToEntity(exercise);
         exerciseRepository.saveAndFlush(entity);
+    }
+
+    @Transactional
+    public Optional<WorkoutAnalysisDTO> getWorkoutAnalysis(Long id) {
+        Optional<WorkoutEntity> entity = workoutRepository.findById(id);
+        return entity.map(workoutEntity -> new WorkoutAnalysis(workoutMapper.entityToModel(workoutEntity)).toDTO());
+    }
+
+
+    @Transactional
+    public boolean deleteWorkout(Long id) {
+        if (workoutRepository.findById(id).isPresent()) {
+            workoutRepository.deleteById(id);
+            return true;
+        } else {
+            return false;
+        }
     }
 
 }
