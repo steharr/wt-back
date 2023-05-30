@@ -24,7 +24,7 @@ public class WorkoutMapper implements Mapper<Workout, WorkoutEntity> {
 
     @Override
     public WorkoutEntity modelToEntity(Workout model) {
-        List<ExerciseEntity> exercises = model.getExercise().stream().map(exerciseMapper::modelToEntity).toList();
+        List<ExerciseEntity> exercises = model.getExercise().stream().map(exerciseMapper::modelToEntity).collect(Collectors.toList());
         WorkoutEntity entity = new WorkoutEntity();
         entity.setWorkoutId(model.getWorkoutId());
         exercises.stream().forEach(ex -> ex.setWorkout(entity));
@@ -32,6 +32,5 @@ public class WorkoutMapper implements Mapper<Workout, WorkoutEntity> {
         entity.setDate(model.getDate());
         return entity;
     }
-
 
 }

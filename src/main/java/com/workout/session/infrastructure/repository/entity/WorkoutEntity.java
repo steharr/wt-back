@@ -26,4 +26,6 @@ public class WorkoutEntity {
 
     @Temporal(TemporalType.DATE)
     private Date date;
+
+    private String username;
 }
