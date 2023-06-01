@@ -45,7 +45,7 @@ public class WorkoutController {
     @GetMapping("home")
     public ResponseEntity<List<Workout>> home(Authentication a) {
         try {
-            String username = ((Account) a.getCredentials()).getUsername();
+            String username = a == null ? "" : ((Account) a.getCredentials()).getUsername();
             return ResponseEntity.ok(this.workoutService.getWorkouts(username));
         } catch (Exception e) {
             log.error("Error retrieving data: {}", e.getMessage());

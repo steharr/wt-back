@@ -6,7 +6,9 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
@@ -19,7 +21,8 @@ public class SecurityConfig {
 
     private static final String[] URL_WHITELIST = {
             "/account/register",
-            "/workout/home"
+            "/workout/home",
+            "/account/auth"
     };
 
     private static final String[] POST_WHITELIST = {
@@ -28,10 +31,16 @@ public class SecurityConfig {
 
     @Autowired
     AuthenticationProvider authenticationProvider;
+    @Autowired
+    JwtTokenFilter jwtTokenFilter;
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
+                .sessionManagement()
+                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                .and()
+                .addFilterBefore(jwtTokenFilter, UsernamePasswordAuthenticationFilter.class)
                 .authenticationProvider(authenticationProvider)
                 .authorizeRequests((authz) -> authz
                         .requestMatchers(URL_WHITELIST).permitAll() // Allow access to specific URLs without authentication
