@@ -28,8 +28,10 @@ public class AccountService implements UserDetailsService {
         accountRepository.saveAndFlush(this.transformModelToEntity(account));
     }
 
-    public void save(AccountDetailsDTO account) {
-        accountRepository.saveAndFlush(this.transformDTOToEntity(account));
+    public AccountEntity save(AccountDetailsDTO account) {
+        AccountEntity entity = this.transformDTOToEntity(account);
+        accountRepository.saveAndFlush(entity);
+        return entity;
     }
 
     private AccountEntity transformDTOToEntity(AccountDetailsDTO dto) {

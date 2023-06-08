@@ -27,6 +27,7 @@ public class SecurityConfig {
 
     private static final String[] POST_WHITELIST = {
             "/account/register",
+            "/account/auth",
     };
 
     @Autowired
