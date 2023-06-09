@@ -22,12 +22,12 @@ public class SecurityConfig {
     private static final String[] URL_WHITELIST = {
             "/account/register",
             "/workout/home",
-            "/account/auth"
+            "/account/login"
     };
 
     private static final String[] POST_WHITELIST = {
             "/account/register",
-            "/account/auth",
+            "/account/login",
     };
 
     @Autowired

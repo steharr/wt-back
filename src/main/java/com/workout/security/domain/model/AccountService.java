@@ -1,9 +1,11 @@
 package com.workout.security.domain.model;
 
+import com.workout.security.domain.dto.AccountDetailsBaseDTO;
 import com.workout.security.domain.dto.AccountDetailsDTO;
 import com.workout.security.infrastructure.repository.AccountRepository;
 import com.workout.security.infrastructure.repository.entity.AccountEntity;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -22,6 +24,10 @@ public class AccountService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         return new Account(accountRepository.findByUsername(username).orElseThrow());
+    }
+
+    public AccountDetailsBaseDTO loadUserDetailsByAuth(Authentication a) throws UsernameNotFoundException {
+        return this.transformModelToBaseDTO(new Account(accountRepository.findByUsername((String) a.getPrincipal()).orElseThrow()));
     }
 
     public void save(Account account) {
@@ -57,6 +63,17 @@ public class AccountService implements UserDetailsService {
         entity.setFirstName(model.getAccount().getFirstName());
         entity.setLastName(model.getAccount().getLastName());
         return entity;
+    }
+
+    private AccountDetailsBaseDTO transformModelToBaseDTO(Account model) {
+        AccountDetailsDTO dto = new AccountDetailsDTO();
+        dto.setAge(model.getAccount().getAge());
+        dto.setGender(model.getAccount().getGender());
+        dto.setEmail(model.getAccount().getEmail());
+        dto.setFirstName(model.getAccount().getFirstName());
+        dto.setLastName(model.getAccount().getLastName());
+        dto.setUsername(model.getUsername());
+        return dto;
     }
 
 }

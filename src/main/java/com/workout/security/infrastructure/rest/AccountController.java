@@ -2,6 +2,7 @@ package com.workout.security.infrastructure.rest;
 
 import com.workout.security.application.config.AuthProvider;
 import com.workout.security.application.config.JwtUtil;
+import com.workout.security.domain.dto.AccountDetailsBaseDTO;
 import com.workout.security.domain.dto.AccountDetailsDTO;
 import com.workout.security.domain.dto.AccountLoginDTO;
 import com.workout.security.domain.dto.JwtTokenDTO;
@@ -13,10 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @Slf4j
 @RestController
@@ -28,7 +26,7 @@ public class AccountController {
     @Autowired
     private AccountService accountService;
 
-    @PostMapping("auth")
+    @PostMapping("login")
     public ResponseEntity<JwtTokenDTO> authenticate(@RequestBody AccountLoginDTO login) {
         try {
             Authentication authentication = authProvider
@@ -52,5 +50,17 @@ public class AccountController {
         }
     }
 
+
+    @GetMapping("details")
+    public ResponseEntity<AccountDetailsBaseDTO> details(Authentication a) {
+        try {
+            if (null == a) {
+                return ResponseEntity.noContent().build();
+            }
+            return ResponseEntity.ok(accountService.loadUserDetailsByAuth(a));
+        } catch (Exception e) {
+            throw new RuntimeException(e.getMessage());
+        }
+    }
 
 }

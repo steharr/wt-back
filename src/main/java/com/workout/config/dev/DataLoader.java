@@ -68,8 +68,8 @@ public class DataLoader implements ApplicationRunner {
                 45,
                 "MALE",
                 "dev",
-                "devpass123",
-                "dev@gmail.com"
+                "dev@gmail.com",
+                "devpass123"
         ));
     }
 

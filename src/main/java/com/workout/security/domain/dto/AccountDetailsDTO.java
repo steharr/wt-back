@@ -1,18 +1,15 @@
 package com.workout.security.domain.dto;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
-public class AccountDetailsDTO {
-    private String firstName;
-    private String lastName;
-    private Integer age;
-    private String gender;
-    private String username;
+public class AccountDetailsDTO extends AccountDetailsBaseDTO {
     private String password;
-    private String email;
+
+    public AccountDetailsDTO(String firstName, String lastName, Integer age, String gender, String username, String email, String password) {
+        super(firstName, lastName, age, gender, username, email);
+        this.password = password;
+    }
 }
