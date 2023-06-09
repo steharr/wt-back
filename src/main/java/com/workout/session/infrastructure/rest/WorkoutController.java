@@ -1,11 +1,14 @@
 package com.workout.session.infrastructure.rest;
 
+import com.workout.security.domain.model.Account;
+import com.workout.security.domain.model.AccountService;
 import com.workout.session.application.WorkoutService;
 import com.workout.session.domain.dto.WorkoutAnalysisDTO;
 import com.workout.session.domain.model.Workout;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -14,16 +17,18 @@ import java.util.Optional;
 @Slf4j
 @RestController
 @RequestMapping("/workout")
-@CrossOrigin(origins = "http://localhost:4200")
 public class WorkoutController {
 
     @Autowired
     private WorkoutService workoutService;
+    @Autowired
+    private AccountService accountService;
 
     @PostMapping()
-    public void workout(@RequestBody Workout workout) {
+    public void workout(@RequestBody Workout workout, Authentication a) {
         log.info("Saving workout...begin");
-        this.workoutService.saveWorkout(workout);
+        String username = ((Account) a.getCredentials()).getUsername();
+        this.workoutService.saveWorkout(workout, username);
         log.info("Saving workout...complete");
     }
 
@@ -38,9 +43,10 @@ public class WorkoutController {
     }
 
     @GetMapping("home")
-    public ResponseEntity<List<Workout>> home() {
+    public ResponseEntity<List<Workout>> home(Authentication a) {
         try {
-            return ResponseEntity.ok(this.workoutService.getWorkouts());
+            String username = a == null ? "" : a.getPrincipal().toString();
+            return ResponseEntity.ok(this.workoutService.getWorkouts(username));
         } catch (Exception e) {
             log.error("Error retrieving data: {}", e.getMessage());
             throw new RuntimeException(e.getMessage());

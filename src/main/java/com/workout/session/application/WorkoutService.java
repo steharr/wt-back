@@ -31,20 +31,21 @@ public class WorkoutService {
     @Autowired
     ExerciseMapper exerciseMapper;
 
+
     @Transactional
-    public List<Workout> getWorkouts() {
+    public List<Workout> getWorkouts(String username) {
         log.info("Getting workout entities...begin");
-//        TODO: add search by id for specific user workouts
-        List<WorkoutEntity> entities = workoutRepository.findAll();
+        List<WorkoutEntity> entities = workoutRepository.findWorkoutEntitiesByUsername(username);
         log.info("Getting workout entities...complete");
         return entities.stream().map(ent -> workoutMapper.entityToModel(ent)).collect(Collectors.toList());
     }
 
 
     @Transactional
-    public void saveWorkout(Workout workout) {
+    public void saveWorkout(Workout workout, String username) {
         log.info("Transforming workout model to entity...begin");
         WorkoutEntity entity = workoutMapper.modelToEntity(workout);
+        entity.setUsername(username);
         log.info("Transforming workout model to entity...complete");
         workoutRepository.saveAndFlush(entity);
     }

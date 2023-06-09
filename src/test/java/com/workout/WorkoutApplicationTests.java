@@ -1,5 +1,7 @@
 package com.workout;
 
+import com.workout.security.domain.dto.AccountDetailsDTO;
+import com.workout.security.domain.model.AccountService;
 import com.workout.session.application.WorkoutService;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
@@ -11,6 +13,8 @@ class WorkoutApplicationTests {
 
     @Autowired
     WorkoutService workoutService;
+    @Autowired
+    AccountService accountService;
 
     @Test
     void contextLoads() {
@@ -19,18 +23,24 @@ class WorkoutApplicationTests {
     @Test
     @Disabled
     void testWorkoutServiceGet() {
-//        var tests = workoutService.getWorkout();
     }
 
     @Test
     @Disabled
     void testWorkoutServiceSave() {
-//        var wk1 = new Workout(2L, List.of(new Exercise("Bench Press", 3L, 10L)), Date.from(Instant.now()), 1);
-//        workoutService.saveWorkout(wk1);
-//
-//        var tests = workoutService.getWorkout();
-//
-//        assertNotNull(tests);
+    }
+
+    @Test
+    void testAccountServiceSave() {
+        accountService.save(new AccountDetailsDTO(
+                "stephen",
+                "harrold",
+                29,
+                "M",
+                "steharr123",
+                "abc",
+                "steharr123@gmail.com"
+        ));
     }
 
 
