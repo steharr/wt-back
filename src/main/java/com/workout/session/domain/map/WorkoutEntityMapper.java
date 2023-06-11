@@ -1,5 +1,6 @@
-package com.workout.session.infrastructure.repository.map;
+package com.workout.session.domain.map;
 
+import com.workout.common.EntityMapper;
 import com.workout.session.domain.model.Workout;
 import com.workout.session.infrastructure.repository.entity.ExerciseEntity;
 import com.workout.session.infrastructure.repository.entity.WorkoutEntity;
@@ -10,10 +11,10 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Component
-public class WorkoutMapper implements Mapper<Workout, WorkoutEntity> {
+public class WorkoutEntityMapper implements EntityMapper<Workout, WorkoutEntity> {
 
     @Autowired
-    ExerciseMapper exerciseMapper;
+    ExerciseEntityMapper exerciseMapper;
 
     @Override
     public Workout entityToModel(WorkoutEntity ent) {

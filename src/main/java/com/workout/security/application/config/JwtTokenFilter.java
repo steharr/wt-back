@@ -1,6 +1,6 @@
 package com.workout.security.application.config;
 
-import com.workout.security.domain.model.AccountService;
+import com.workout.security.application.AccountService;
 import io.jsonwebtoken.MalformedJwtException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;

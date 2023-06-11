@@ -1,13 +1,14 @@
-package com.workout.session.infrastructure.repository.map;
+package com.workout.session.domain.map;
 
+import com.workout.common.EntityMapper;
 import com.workout.session.domain.model.Exercise;
 import com.workout.session.infrastructure.repository.entity.ExerciseEntity;
 import org.springframework.stereotype.Component;
 
 @Component
-public class ExerciseMapper implements Mapper<Exercise, ExerciseEntity> {
+public class ExerciseEntityMapper implements EntityMapper<Exercise, ExerciseEntity> {
 
-    private ExerciseMapper() {
+    private ExerciseEntityMapper() {
     }
 
     @Override

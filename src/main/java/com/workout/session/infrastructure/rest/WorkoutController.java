@@ -1,7 +1,7 @@
 package com.workout.session.infrastructure.rest;
 
+import com.workout.security.application.AccountService;
 import com.workout.security.domain.model.Account;
-import com.workout.security.domain.model.AccountService;
 import com.workout.session.application.WorkoutService;
 import com.workout.session.domain.dto.WorkoutAnalysisDTO;
 import com.workout.session.domain.model.Workout;

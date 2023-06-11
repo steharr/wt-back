@@ -1,7 +1,7 @@
 package com.workout.config.dev;
 
+import com.workout.security.application.AccountService;
 import com.workout.security.domain.dto.AccountDetailsDTO;
-import com.workout.security.domain.model.AccountService;
 import com.workout.session.application.WorkoutService;
 import com.workout.session.domain.model.Exercise;
 import com.workout.session.domain.model.Workout;
@@ -10,7 +10,6 @@ import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -32,7 +31,6 @@ public class DataLoader implements ApplicationRunner {
         this.createDummyUser();
     }
 
-    @Transactional
     void saveDummyWorkouts() {
 
         Exercise SQUAT = new Exercise("Bench Press", 5L, 5L, BigDecimal.valueOf(100));

@@ -1,6 +1,8 @@
 package com.workout.session.application;
 
 import com.workout.session.domain.dto.WorkoutAnalysisDTO;
+import com.workout.session.domain.map.ExerciseEntityMapper;
+import com.workout.session.domain.map.WorkoutEntityMapper;
 import com.workout.session.domain.model.Exercise;
 import com.workout.session.domain.model.Workout;
 import com.workout.session.domain.model.WorkoutAnalysis;
@@ -8,8 +10,6 @@ import com.workout.session.infrastructure.repository.ExerciseRepository;
 import com.workout.session.infrastructure.repository.WorkoutRepository;
 import com.workout.session.infrastructure.repository.entity.ExerciseEntity;
 import com.workout.session.infrastructure.repository.entity.WorkoutEntity;
-import com.workout.session.infrastructure.repository.map.ExerciseMapper;
-import com.workout.session.infrastructure.repository.map.WorkoutMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -27,9 +27,9 @@ public class WorkoutService {
     @Autowired
     ExerciseRepository exerciseRepository;
     @Autowired
-    WorkoutMapper workoutMapper;
+    WorkoutEntityMapper workoutMapper;
     @Autowired
-    ExerciseMapper exerciseMapper;
+    ExerciseEntityMapper exerciseMapper;
 
 
     @Transactional

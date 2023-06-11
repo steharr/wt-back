@@ -1,12 +1,12 @@
 package com.workout.security.infrastructure.rest;
 
+import com.workout.security.application.AccountService;
 import com.workout.security.application.config.AuthProvider;
 import com.workout.security.application.config.JwtUtil;
 import com.workout.security.domain.dto.AccountDetailsBaseDTO;
 import com.workout.security.domain.dto.AccountDetailsDTO;
 import com.workout.security.domain.dto.AccountLoginDTO;
 import com.workout.security.domain.dto.JwtTokenDTO;
-import com.workout.security.domain.model.AccountService;
 import com.workout.security.infrastructure.repository.entity.AccountEntity;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;

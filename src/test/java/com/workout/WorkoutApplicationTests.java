@@ -1,7 +1,7 @@
 package com.workout;
 
+import com.workout.security.application.AccountService;
 import com.workout.security.domain.dto.AccountDetailsDTO;
-import com.workout.security.domain.model.AccountService;
 import com.workout.session.application.WorkoutService;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
