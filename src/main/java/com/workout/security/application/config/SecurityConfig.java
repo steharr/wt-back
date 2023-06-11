@@ -56,7 +56,7 @@ public class SecurityConfig {
                 )
                 .httpBasic(withDefaults())
                 .cors().and()
-                .csrf().ignoringRequestMatchers(POST_WHITELIST).ignoringRequestMatchers(toH2Console());
+                .csrf().disable();
 
         if (devEnvironment()) {
             http.headers().frameOptions().disable();

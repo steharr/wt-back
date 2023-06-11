@@ -1,7 +1,6 @@
 package com.workout.session.infrastructure.rest;
 
 import com.workout.common.exception.ApplicationException;
-import com.workout.security.domain.model.Account;
 import com.workout.session.application.WorkoutService;
 import com.workout.session.domain.dto.WorkoutAnalysisDTO;
 import com.workout.session.domain.model.Workout;
@@ -26,7 +25,7 @@ public class WorkoutController {
     public void workout(@RequestBody Workout workout, Authentication a) {
         try {
             log.info("Saving workout...begin");
-            String username = ((Account) a.getCredentials()).getUsername();
+            String username = a == null ? "" : a.getPrincipal().toString();
             this.workoutService.saveWorkout(workout, username);
             log.info("Saving workout...complete");
         } catch (Exception e) {
