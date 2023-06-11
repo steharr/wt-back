@@ -22,9 +22,14 @@ public class ExerciseEntity {
     @JoinColumn(name = "workoutId")
     private WorkoutEntity workout;
 
-    private String exerciseName;
+    //    TODO: configure in db
+    private String type;
+
+    
     private Long sets;
     private Long reps;
     private BigDecimal weight;
+
+    private Integer rating;
 
 }

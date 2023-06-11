@@ -1,6 +1,6 @@
 package com.workout.security.domain.map;
 
-import com.workout.common.Mapper;
+import com.workout.common.map.Mapper;
 import com.workout.security.domain.dto.AccountDetailsBaseDTO;
 import com.workout.security.domain.dto.AccountDetailsDTO;
 import com.workout.security.domain.model.Account;

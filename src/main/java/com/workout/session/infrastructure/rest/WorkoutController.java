@@ -1,5 +1,6 @@
 package com.workout.session.infrastructure.rest;
 
+import com.workout.common.exception.ApplicationException;
 import com.workout.security.domain.model.Account;
 import com.workout.session.application.WorkoutService;
 import com.workout.session.domain.dto.WorkoutAnalysisDTO;
@@ -23,10 +24,14 @@ public class WorkoutController {
 
     @PostMapping()
     public void workout(@RequestBody Workout workout, Authentication a) {
-        log.info("Saving workout...begin");
-        String username = ((Account) a.getCredentials()).getUsername();
-        this.workoutService.saveWorkout(workout, username);
-        log.info("Saving workout...complete");
+        try {
+            log.info("Saving workout...begin");
+            String username = ((Account) a.getCredentials()).getUsername();
+            this.workoutService.saveWorkout(workout, username);
+            log.info("Saving workout...complete");
+        } catch (Exception e) {
+            throw new ApplicationException(e.getMessage());
+        }
     }
 
     @DeleteMapping("/{id}")
@@ -35,7 +40,7 @@ public class WorkoutController {
             return ResponseEntity.ok(this.workoutService.deleteWorkout(id));
         } catch (Exception e) {
             log.error("Error deleting workout id: {}, Cause:{}", id, e.getMessage());
-            throw new RuntimeException(e.getMessage());
+            throw new ApplicationException(e.getMessage());
         }
     }
 
@@ -46,13 +51,18 @@ public class WorkoutController {
             return ResponseEntity.ok(this.workoutService.getWorkouts(username));
         } catch (Exception e) {
             log.error("Error retrieving data: {}", e.getMessage());
-            throw new RuntimeException(e.getMessage());
+            throw new ApplicationException(e.getMessage());
         }
     }
 
     @GetMapping("analysis/{id}")
     public ResponseEntity<WorkoutAnalysisDTO> analysis(@PathVariable Long id) {
-        Optional<WorkoutAnalysisDTO> analysis = workoutService.getWorkoutAnalysis(id);
-        return analysis.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.badRequest().build());
+        try {
+            Optional<WorkoutAnalysisDTO> analysis = workoutService.getWorkoutAnalysis(id);
+            return analysis.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.badRequest().build());
+        } catch (Exception e) {
+            log.error("Error retrieving data: {}", e.getMessage());
+            throw new ApplicationException(e.getMessage());
+        }
     }
 }
