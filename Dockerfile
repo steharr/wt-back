@@ -1,14 +1,12 @@
-# syntax=docker/dockerfile:1
 
-FROM eclipse-temurin:17-jdk-jammy
-
+FROM maven:3.8.3-openjdk-17-slim AS build
 WORKDIR /app
-
-COPY .mvn/ .mvn
-COPY mvnw pom.xml ./
-RUN chmod +x mvnw
-RUN ./mvnw dependency:resolve
-
+COPY pom.xml .
+RUN mvn dependency:go-offline
 COPY src ./src
+RUN mvn package -DskipTests
 
-CMD ["./mvnw", "spring-boot:run"]
+FROM openjdk:17-jdk-slim
+COPY --from=build /app/target/*.jar /app/app.jar
+EXPOSE 8080
+ENTRYPOINT ["java", "-jar", "/app/app.jar"]

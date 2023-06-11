@@ -1,6 +1,6 @@
 package com.workout.session.domain.map;
 
-import com.workout.common.EntityMapper;
+import com.workout.common.map.EntityMapper;
 import com.workout.session.domain.model.Exercise;
 import com.workout.session.infrastructure.repository.entity.ExerciseEntity;
 import org.springframework.stereotype.Component;
@@ -13,13 +13,13 @@ public class ExerciseEntityMapper implements EntityMapper<Exercise, ExerciseEnti
 
     @Override
     public Exercise entityToModel(ExerciseEntity ent) {
-        return new Exercise(ent.getExerciseName(), ent.getSets(), ent.getReps(), ent.getWeight());
+        return new Exercise(ent.getType(), ent.getSets(), ent.getReps(), ent.getWeight());
     }
 
     @Override
     public ExerciseEntity modelToEntity(Exercise model) {
         var ex = new ExerciseEntity();
-        ex.setExerciseName(model.getExercise());
+        ex.setType(model.getExercise());
         ex.setReps(model.getReps());
         ex.setSets(model.getSets());
         ex.setWeight(model.getWeight());

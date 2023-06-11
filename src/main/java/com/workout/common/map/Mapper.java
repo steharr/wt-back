@@ -1,4 +1,4 @@
-package com.workout.common;
+package com.workout.common.map;
 
 public interface Mapper<Model, Entity, Dto> {
 

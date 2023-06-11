@@ -34,7 +34,11 @@ public class AccountService implements UserDetailsService {
     public AccountDetailsBaseDTO loadUserDetailsByAuth(Authentication a) throws UsernameNotFoundException {
         return mapper.modelToDto(new Account(accountRepository.findByUsername((String) a.getPrincipal()).orElseThrow()));
     }
-    
+
+    public AccountEntity loadUserEntityByUsername(String username) throws UsernameNotFoundException {
+        return new Account(accountRepository.findByUsername(username).orElseThrow()).getAccount();
+    }
+
     public AccountEntity save(AccountDetailsDTO account) {
         AccountEntity entity = this.transformDTOToEntity(account);
         accountRepository.saveAndFlush(entity);

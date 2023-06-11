@@ -1,5 +1,7 @@
 package com.workout.session.application;
 
+import com.workout.security.application.AccountService;
+import com.workout.security.infrastructure.repository.entity.AccountEntity;
 import com.workout.session.domain.dto.WorkoutAnalysisDTO;
 import com.workout.session.domain.map.ExerciseEntityMapper;
 import com.workout.session.domain.map.WorkoutEntityMapper;
@@ -30,12 +32,14 @@ public class WorkoutService {
     WorkoutEntityMapper workoutMapper;
     @Autowired
     ExerciseEntityMapper exerciseMapper;
+    @Autowired
+    AccountService accountService;
 
 
     @Transactional
     public List<Workout> getWorkouts(String username) {
         log.info("Getting workout entities...begin");
-        List<WorkoutEntity> entities = workoutRepository.findWorkoutEntitiesByUsername(username);
+        List<WorkoutEntity> entities = workoutRepository.findWorkoutEntitiesByUserUsername(username);
         log.info("Getting workout entities...complete");
         return entities.stream().map(ent -> workoutMapper.entityToModel(ent)).collect(Collectors.toList());
     }
@@ -45,7 +49,8 @@ public class WorkoutService {
     public void saveWorkout(Workout workout, String username) {
         log.info("Transforming workout model to entity...begin");
         WorkoutEntity entity = workoutMapper.modelToEntity(workout);
-        entity.setUsername(username);
+        AccountEntity user = accountService.loadUserEntityByUsername(username);
+        entity.setUser(user);
         log.info("Transforming workout model to entity...complete");
         workoutRepository.saveAndFlush(entity);
     }

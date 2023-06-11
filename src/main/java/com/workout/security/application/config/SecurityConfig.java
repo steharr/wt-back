@@ -49,14 +49,14 @@ public class SecurityConfig {
                 .and()
                 .addFilterBefore(jwtTokenFilter, UsernamePasswordAuthenticationFilter.class)
                 .authenticationProvider(authenticationProvider)
-                .authorizeRequests((authz) -> authz
+                .authorizeHttpRequests((authz) -> authz
                         .requestMatchers(URL_WHITELIST).permitAll()
                         .requestMatchers(toH2Console()).permitAll()// Allow access to specific URLs without authentication
                         .anyRequest().authenticated()
                 )
                 .httpBasic(withDefaults())
                 .cors().and()
-                .csrf().ignoringRequestMatchers(POST_WHITELIST).ignoringRequestMatchers(toH2Console());
+                .csrf().disable();
 
         if (devEnvironment()) {
             http.headers().frameOptions().disable();
