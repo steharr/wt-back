@@ -1,6 +1,5 @@
 package com.workout.session.infrastructure.rest;
 
-import com.workout.security.application.AccountService;
 import com.workout.security.domain.model.Account;
 import com.workout.session.application.WorkoutService;
 import com.workout.session.domain.dto.WorkoutAnalysisDTO;
@@ -21,8 +20,6 @@ public class WorkoutController {
 
     @Autowired
     private WorkoutService workoutService;
-    @Autowired
-    private AccountService accountService;
 
     @PostMapping()
     public void workout(@RequestBody Workout workout, Authentication a) {

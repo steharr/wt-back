@@ -1,8 +1,12 @@
 package com.workout.security.application.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.PropertySource;
+import org.springframework.context.annotation.PropertySources;
+import org.springframework.core.env.Environment;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
@@ -13,27 +17,29 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
+import java.util.Arrays;
+
 import static org.springframework.boot.autoconfigure.security.servlet.PathRequest.toH2Console;
 import static org.springframework.security.config.Customizer.withDefaults;
 
 @Configuration
+@PropertySources({
+        @PropertySource("classpath:security.properties"),
+})
 public class SecurityConfig {
 
-    private static final String[] URL_WHITELIST = {
-            "/account/register",
-            "/workout/home",
-            "/account/login"
-    };
+    @Value("${url.whitelist}")
+    private String[] URL_WHITELIST;
 
-    private static final String[] POST_WHITELIST = {
-            "/account/register",
-            "/account/login",
-    };
+    @Value("${post.whitelist}")
+    private String[] POST_WHITELIST;
 
     @Autowired
     AuthenticationProvider authenticationProvider;
     @Autowired
     JwtTokenFilter jwtTokenFilter;
+    @Autowired
+    Environment env;
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -44,12 +50,17 @@ public class SecurityConfig {
                 .addFilterBefore(jwtTokenFilter, UsernamePasswordAuthenticationFilter.class)
                 .authenticationProvider(authenticationProvider)
                 .authorizeRequests((authz) -> authz
-                        .requestMatchers(URL_WHITELIST).permitAll() // Allow access to specific URLs without authentication
+                        .requestMatchers(URL_WHITELIST).permitAll()
+                        .requestMatchers(toH2Console()).permitAll()// Allow access to specific URLs without authentication
                         .anyRequest().authenticated()
                 )
                 .httpBasic(withDefaults())
                 .cors().and()
                 .csrf().ignoringRequestMatchers(POST_WHITELIST).ignoringRequestMatchers(toH2Console());
+
+        if (devEnvironment()) {
+            http.headers().frameOptions().disable();
+        }
         return http.build();
     }
 
@@ -63,5 +74,10 @@ public class SecurityConfig {
     @Bean
     public WebSecurityCustomizer webSecurityCustomizer() {
         return (web) -> web.ignoring().requestMatchers("/localhost:8080/account/register", "/home");
+    }
+
+    private boolean devEnvironment() {
+        return Arrays.stream(env.getActiveProfiles()).anyMatch(
+                e -> (e.equalsIgnoreCase("dev")));
     }
 }

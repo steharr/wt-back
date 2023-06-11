@@ -5,6 +5,7 @@ import com.workout.security.domain.dto.AccountDetailsDTO;
 import com.workout.session.application.WorkoutService;
 import com.workout.session.domain.model.Exercise;
 import com.workout.session.domain.model.Workout;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
@@ -17,6 +18,7 @@ import java.util.List;
 
 @Component
 @Profile("DEV")
+@Slf4j
 public class DataLoader implements ApplicationRunner {
 
     @Autowired
@@ -27,8 +29,10 @@ public class DataLoader implements ApplicationRunner {
 
     @Override
     public void run(ApplicationArguments args) throws Exception {
+        log.info("Detected DEV profile: Starting ApplicationRunner to load up test data...");
         this.saveDummyWorkouts();
         this.createDummyUser();
+        log.info("Detected DEV profile: Completed ApplicationRunner to load up test data...");
     }
 
     void saveDummyWorkouts() {
