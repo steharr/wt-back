@@ -1,5 +1,6 @@
 package com.workout.security.infrastructure.rest;
 
+import com.workout.common.exception.ApplicationException;
 import com.workout.security.application.AccountService;
 import com.workout.security.application.config.AuthProvider;
 import com.workout.security.application.config.JwtUtil;
@@ -35,7 +36,7 @@ public class AccountController {
             String token = JwtUtil.generateToken(authentication);
             return ResponseEntity.ok(new JwtTokenDTO(token));
         } catch (Exception e) {
-            throw new RuntimeException(e.getMessage());
+            throw new ApplicationException(e.getMessage());
         }
     }
 
@@ -46,7 +47,7 @@ public class AccountController {
             String token = JwtUtil.generateToken(account);
             return ResponseEntity.ok(new JwtTokenDTO(token));
         } catch (Exception e) {
-            throw new RuntimeException(e.getMessage());
+            throw new ApplicationException(e.getMessage());
         }
     }
 
@@ -59,7 +60,7 @@ public class AccountController {
             }
             return ResponseEntity.ok(accountService.loadUserDetailsByAuth(a));
         } catch (Exception e) {
-            throw new RuntimeException(e.getMessage());
+            throw new ApplicationException(e.getMessage());
         }
     }
 
