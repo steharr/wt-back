@@ -51,7 +51,6 @@ public class SecurityConfig {
                 .authenticationProvider(authenticationProvider)
                 .authorizeHttpRequests((authz) -> authz
                         .requestMatchers(URL_WHITELIST).permitAll()
-                        .requestMatchers(toH2Console()).permitAll()// Allow access to specific URLs without authentication
                         .anyRequest().authenticated()
                 )
                 .httpBasic(withDefaults())
@@ -59,7 +58,11 @@ public class SecurityConfig {
                 .csrf().disable();
 
         if (devEnvironment()) {
-            http.headers().frameOptions().disable();
+            http
+                    .authorizeHttpRequests((authz) -> authz
+                            .requestMatchers(toH2Console()).permitAll()
+                    )
+                    .headers().frameOptions().disable();
         }
         return http.build();
     }
