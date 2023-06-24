@@ -15,7 +15,7 @@ import java.math.BigDecimal;
 public class ExerciseEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long exerciseId;
 
     @ManyToOne()
@@ -24,7 +24,7 @@ public class ExerciseEntity {
 
     //    TODO: configure in db
     private String type;
-    
+
     private Long sets;
     private Long reps;
     private BigDecimal weight;
