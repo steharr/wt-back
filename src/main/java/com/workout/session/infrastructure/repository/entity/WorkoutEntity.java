@@ -19,7 +19,7 @@ import java.util.List;
 public class WorkoutEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "WORKOUT_ID")
     private Long workoutId;
 

@@ -17,7 +17,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 @Component
-public class JwtTokenFilter extends OncePerRequestFilter {
+public class JwtTokenAuthorizationFilter extends OncePerRequestFilter {
 
     @Autowired
     private AccountService accountService;

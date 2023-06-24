@@ -21,7 +21,7 @@ public class WorkoutController {
     @Autowired
     private WorkoutService workoutService;
 
-    @PostMapping()
+    @PostMapping("/save")
     public void workout(@RequestBody Workout workout, Authentication a) {
         try {
             log.info("Saving workout...begin");

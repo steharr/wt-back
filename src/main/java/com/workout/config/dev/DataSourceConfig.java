@@ -1,5 +1,6 @@
 package com.workout.config.dev;
 
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.jdbc.DataSourceBuilder;
 import org.springframework.context.annotation.*;
@@ -24,6 +25,7 @@ public class DataSourceConfig {
     private String pw;
 
     @Bean
+    @Qualifier("h2DataSource")
     public DataSource getDataSource() {
         DataSourceBuilder dataSourceBuilder = DataSourceBuilder.create();
         dataSourceBuilder.driverClassName(driver);

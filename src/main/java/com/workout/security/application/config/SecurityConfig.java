@@ -7,9 +7,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.context.annotation.PropertySources;
 import org.springframework.core.env.Environment;
-import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
@@ -31,13 +29,10 @@ public class SecurityConfig {
     @Value("${url.whitelist}")
     private String[] URL_WHITELIST;
 
-    @Value("${post.whitelist}")
-    private String[] POST_WHITELIST;
-
     @Autowired
-    AuthenticationProvider authenticationProvider;
+    AuthProvider authenticationProvider;
     @Autowired
-    JwtTokenFilter jwtTokenFilter;
+    JwtTokenAuthorizationFilter jwtTokenAuthorizationFilter;
     @Autowired
     Environment env;
 
@@ -47,36 +42,32 @@ public class SecurityConfig {
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
-                .addFilterBefore(jwtTokenFilter, UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(jwtTokenAuthorizationFilter, UsernamePasswordAuthenticationFilter.class)
                 .authenticationProvider(authenticationProvider)
-                .authorizeHttpRequests((authz) -> authz
-                        .requestMatchers(URL_WHITELIST).permitAll()
-                        .anyRequest().authenticated()
+                .authorizeHttpRequests((authz) -> {
+                            if (devEnvironment()) {
+                                authz.requestMatchers(toH2Console()).permitAll();
+                            }
+                            authz.requestMatchers(URL_WHITELIST).permitAll();
+                        }
                 )
-                .httpBasic(withDefaults())
-                .cors().and()
-                .csrf().disable();
+                .authorizeHttpRequests().anyRequest().authenticated().and()
+                .cors(withDefaults())
+                .csrf().disable()
+                .httpBasic(withDefaults());
 
         if (devEnvironment()) {
-            http
-                    .authorizeHttpRequests((authz) -> authz
-                            .requestMatchers(toH2Console()).permitAll()
-                    )
-                    .headers().frameOptions().disable();
+            http.headers().frameOptions().disable();
         }
         return http.build();
     }
 
     @Bean
     CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration configuration = new CorsConfiguration();
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/**", new CorsConfiguration().applyPermitDefaultValues());
+        source.registerCorsConfiguration("/**", configuration.applyPermitDefaultValues()); // Apply the configuration to all paths
         return source;
-    }
-
-    @Bean
-    public WebSecurityCustomizer webSecurityCustomizer() {
-        return (web) -> web.ignoring().requestMatchers("/localhost:8080/account/register", "/home");
     }
 
     private boolean devEnvironment() {
