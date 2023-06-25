@@ -1,4 +1,4 @@
-package com.workout.config.dev;
+package com.workout.config.infrastructure.db.dev;
 
 import com.workout.security.application.AccountService;
 import com.workout.security.domain.dto.AccountDetailsDTO;
