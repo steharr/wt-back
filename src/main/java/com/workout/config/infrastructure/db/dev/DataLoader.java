@@ -3,6 +3,7 @@ package com.workout.config.infrastructure.db.dev;
 import com.workout.security.application.AccountService;
 import com.workout.security.domain.dto.AccountDetailsDTO;
 import com.workout.session.application.WorkoutService;
+import com.workout.session.domain.dto.ExerciseTypeDTO;
 import com.workout.session.domain.model.Exercise;
 import com.workout.session.domain.model.Workout;
 import lombok.extern.slf4j.Slf4j;
@@ -35,6 +36,7 @@ public class DataLoader implements ApplicationRunner {
         log.info("Detected DEV profile: Starting ApplicationRunner to load up test data...");
         this.createDummyUser();
         this.saveDummyWorkouts();
+        this.saveWorkoutTypes();
         log.info("Detected DEV profile: Completed ApplicationRunner to load up test data...");
     }
 
@@ -75,6 +77,19 @@ public class DataLoader implements ApplicationRunner {
                 TEST_USERNAME,
                 "dev@gmail.com",
                 TEST_PASSWORD
+        ));
+    }
+
+    private void saveWorkoutTypes() {
+        workoutService.saveExerciseTypes(List.of(
+                new ExerciseTypeDTO("Bench Press"),
+                new ExerciseTypeDTO("Squats"),
+                new ExerciseTypeDTO("Deadlifts"),
+                new ExerciseTypeDTO("Push Ups"),
+                new ExerciseTypeDTO("Push Ups (Kneeling)"),
+                new ExerciseTypeDTO("Shoulder Press"),
+                new ExerciseTypeDTO("Pull-ups"),
+                new ExerciseTypeDTO("Chin-ups")
         ));
     }
 

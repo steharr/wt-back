@@ -2,10 +2,12 @@ package com.workout.session.infrastructure.rest;
 
 import com.workout.common.exception.ApplicationException;
 import com.workout.session.application.WorkoutService;
+import com.workout.session.domain.dto.ExerciseTypeDTO;
 import com.workout.session.domain.dto.WorkoutAnalysisDTO;
 import com.workout.session.domain.model.Workout;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
@@ -59,6 +61,16 @@ public class WorkoutController {
         try {
             Optional<WorkoutAnalysisDTO> analysis = workoutService.getWorkoutAnalysis(id);
             return analysis.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.badRequest().build());
+        } catch (Exception e) {
+            log.error("Error retrieving data: {}", e.getMessage());
+            throw new ApplicationException(e.getMessage());
+        }
+    }
+
+    @GetMapping("exercises")
+    public ResponseEntity<List<ExerciseTypeDTO>> exercises() {
+        try {
+            return new ResponseEntity<>(workoutService.getExcerisesTypes(), HttpStatus.OK);
         } catch (Exception e) {
             log.error("Error retrieving data: {}", e.getMessage());
             throw new ApplicationException(e.getMessage());
