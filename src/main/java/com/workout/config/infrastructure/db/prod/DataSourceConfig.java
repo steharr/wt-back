@@ -1,4 +1,4 @@
-package com.workout.config.prod;
+package com.workout.config.infrastructure.db.prod;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;

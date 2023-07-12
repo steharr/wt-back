@@ -1,4 +1,4 @@
-package com.workout.config.dev;
+package com.workout.config.infrastructure.db.dev;
 
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.orm.jpa.EntityManagerFactoryBuilder;
