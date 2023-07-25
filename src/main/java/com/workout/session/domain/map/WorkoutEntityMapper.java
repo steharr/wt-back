@@ -20,7 +20,7 @@ public class WorkoutEntityMapper implements EntityMapper<Workout, WorkoutEntity>
     public Workout entityToModel(WorkoutEntity ent) {
         return new Workout(ent.getWorkoutId(),
                 ent.getExercises().stream().map(exerciseMapper::entityToModel).collect(Collectors.toList()),
-                ent.getDate(), 1);
+                ent.getDate(), ent.getRating());
     }
 
     @Override
@@ -31,6 +31,7 @@ public class WorkoutEntityMapper implements EntityMapper<Workout, WorkoutEntity>
         exercises.stream().forEach(ex -> ex.setWorkout(entity));
         entity.setExercises(exercises);
         entity.setDate(model.getDate());
+        entity.setRating(model.getRating());
         return entity;
     }
 
