@@ -2,10 +2,12 @@ package com.workout.session.infrastructure.rest;
 
 import com.workout.common.exception.ApplicationException;
 import com.workout.session.application.WorkoutService;
+import com.workout.session.domain.dto.ExerciseTypeDTO;
 import com.workout.session.domain.dto.WorkoutAnalysisDTO;
 import com.workout.session.domain.model.Workout;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
@@ -29,7 +31,7 @@ public class WorkoutController {
             this.workoutService.saveWorkout(workout, username);
             log.info("Saving workout...complete");
         } catch (Exception e) {
-            throw new ApplicationException(e.getMessage());
+            throw new ApplicationException(String.join(":", "Technical Error Saving Workout", e.getMessage()));
         }
     }
 
@@ -39,7 +41,7 @@ public class WorkoutController {
             return ResponseEntity.ok(this.workoutService.deleteWorkout(id));
         } catch (Exception e) {
             log.error("Error deleting workout id: {}, Cause:{}", id, e.getMessage());
-            throw new ApplicationException(e.getMessage());
+            throw new ApplicationException(String.join(":", "Technical Error Deleting Workout", e.getMessage()));
         }
     }
 
@@ -50,7 +52,7 @@ public class WorkoutController {
             return ResponseEntity.ok(this.workoutService.getWorkouts(username));
         } catch (Exception e) {
             log.error("Error retrieving data: {}", e.getMessage());
-            throw new ApplicationException(e.getMessage());
+            throw new ApplicationException(String.join(":", "Technical Error Loading Homepage", e.getMessage()));
         }
     }
 
@@ -61,7 +63,17 @@ public class WorkoutController {
             return analysis.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.badRequest().build());
         } catch (Exception e) {
             log.error("Error retrieving data: {}", e.getMessage());
-            throw new ApplicationException(e.getMessage());
+            throw new ApplicationException(String.join(":", "Technical Error Loading Analysis", e.getMessage()));
+        }
+    }
+
+    @GetMapping("exercises")
+    public ResponseEntity<List<ExerciseTypeDTO>> exercises() {
+        try {
+            return new ResponseEntity<>(workoutService.getExcerisesTypes(), HttpStatus.OK);
+        } catch (Exception e) {
+            log.error("Error retrieving data: {}", e.getMessage());
+            throw new ApplicationException(String.join(":", "Technical Error Loading Exercises", e.getMessage()));
         }
     }
 }

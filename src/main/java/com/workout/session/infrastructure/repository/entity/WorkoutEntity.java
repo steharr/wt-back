@@ -32,4 +32,6 @@ public class WorkoutEntity {
     @OneToOne
     @JoinColumn(name = "WORKOUT_USER_ID")
     private AccountEntity user;
+
+    private Integer rating;
 }

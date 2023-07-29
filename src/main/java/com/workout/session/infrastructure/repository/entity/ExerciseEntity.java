@@ -29,6 +29,4 @@ public class ExerciseEntity {
     private Long reps;
     private BigDecimal weight;
 
-    private Integer rating;
-
 }

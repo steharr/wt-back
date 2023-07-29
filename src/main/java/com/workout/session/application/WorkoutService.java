@@ -2,6 +2,7 @@ package com.workout.session.application;
 
 import com.workout.security.application.AccountService;
 import com.workout.security.infrastructure.repository.entity.AccountEntity;
+import com.workout.session.domain.dto.ExerciseTypeDTO;
 import com.workout.session.domain.dto.WorkoutAnalysisDTO;
 import com.workout.session.domain.map.ExerciseEntityMapper;
 import com.workout.session.domain.map.WorkoutEntityMapper;
@@ -9,7 +10,9 @@ import com.workout.session.domain.model.Exercise;
 import com.workout.session.domain.model.Workout;
 import com.workout.session.domain.model.WorkoutAnalysis;
 import com.workout.session.infrastructure.repository.ExerciseRepository;
+import com.workout.session.infrastructure.repository.ExerciseTypeRepository;
 import com.workout.session.infrastructure.repository.WorkoutRepository;
+import com.workout.session.infrastructure.repository.entity.ExceriseTypeEntity;
 import com.workout.session.infrastructure.repository.entity.ExerciseEntity;
 import com.workout.session.infrastructure.repository.entity.WorkoutEntity;
 import lombok.extern.slf4j.Slf4j;
@@ -28,6 +31,8 @@ public class WorkoutService {
     WorkoutRepository workoutRepository;
     @Autowired
     ExerciseRepository exerciseRepository;
+    @Autowired
+    ExerciseTypeRepository exerciseTypeRepository;
     @Autowired
     WorkoutEntityMapper workoutMapper;
     @Autowired
@@ -77,5 +82,27 @@ public class WorkoutService {
             return false;
         }
     }
+
+
+    @Transactional
+    public List<ExerciseTypeDTO> getExcerisesTypes() {
+        log.info("Getting types entities...begin");
+        List<ExceriseTypeEntity> entities = exerciseTypeRepository.findAll();
+        log.info("Getting types entities...complete");
+        return entities.stream().map(ent -> new ExerciseTypeDTO(ent.getName())).collect(Collectors.toList());
+    }
+
+    @Transactional
+    public void saveExerciseTypes(List<ExerciseTypeDTO> dtos) {
+
+        List<ExceriseTypeEntity> entities = dtos.stream().map(elem -> {
+            var ent = new ExceriseTypeEntity();
+            ent.setName(elem.getName());
+            return ent;
+        }).collect(Collectors.toList());
+
+        exerciseTypeRepository.saveAll(entities);
+    }
+
 
 }
