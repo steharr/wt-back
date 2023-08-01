@@ -36,7 +36,8 @@ public class AccountController {
             String token = JwtUtil.generateToken(authentication);
             return ResponseEntity.ok(new JwtTokenDTO(token));
         } catch (Exception e) {
-            throw new ApplicationException(e.getMessage());
+            log.error(String.join(":", "Error authenticating", e.getMessage()));
+            throw new ApplicationException("Error logging in user, Please try again later");
         }
     }
 
@@ -47,7 +48,8 @@ public class AccountController {
             String token = JwtUtil.generateToken(account);
             return ResponseEntity.ok(new JwtTokenDTO(token));
         } catch (Exception e) {
-            throw new ApplicationException(e.getMessage());
+            log.error(String.join(":", "Error authenticating", e.getMessage()));
+            throw new ApplicationException("Error registering user, Please try again later");
         }
     }
 
@@ -60,7 +62,8 @@ public class AccountController {
             }
             return ResponseEntity.ok(accountService.loadUserDetailsByAuth(a));
         } catch (Exception e) {
-            throw new ApplicationException(e.getMessage());
+            log.error(String.join(":", "Error viewing details", e.getMessage()));
+            throw new ApplicationException("Error viewing user, Please try again later");
         }
     }
 
