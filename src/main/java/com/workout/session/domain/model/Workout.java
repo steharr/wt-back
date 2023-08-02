@@ -12,7 +12,7 @@ import java.util.List;
 @NoArgsConstructor
 public class Workout {
     private Long workoutId;
-    private List<Exercise> exercise;
+    private List<Exercise> exercises;
     private LocalDateTime date;
     private Integer rating;
 }

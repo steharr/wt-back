@@ -75,7 +75,7 @@ public class DevTestDataGenerator {
     private static void saveWorkout(LocalDateTime date, List<Exercise> exercises, Integer rating, Long id, String username, WorkoutService workoutService) {
         var w = new Workout();
         w.setDate(date);
-        w.setExercise(exercises);
+        w.setExercises(exercises);
         w.setWorkoutId(id);
         w.setRating(rating);
         workoutService.saveWorkout(w, username);

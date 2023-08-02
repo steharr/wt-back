@@ -2,11 +2,13 @@ package com.workout.session.application;
 
 import com.workout.security.application.AccountService;
 import com.workout.security.infrastructure.repository.entity.AccountEntity;
+import com.workout.session.domain.dto.ExerciseAnalysisDTO;
 import com.workout.session.domain.dto.ExerciseTypeDTO;
 import com.workout.session.domain.dto.WorkoutAnalysisDTO;
 import com.workout.session.domain.map.ExerciseEntityMapper;
 import com.workout.session.domain.map.WorkoutEntityMapper;
 import com.workout.session.domain.model.Exercise;
+import com.workout.session.domain.model.ExerciseAnalysis;
 import com.workout.session.domain.model.Workout;
 import com.workout.session.domain.model.WorkoutAnalysis;
 import com.workout.session.infrastructure.repository.ExerciseRepository;
@@ -70,6 +72,18 @@ public class WorkoutService {
     public Optional<WorkoutAnalysisDTO> getWorkoutAnalysis(Long id) {
         Optional<WorkoutEntity> entity = workoutRepository.findById(id);
         return entity.map(workoutEntity -> new WorkoutAnalysis(workoutMapper.entityToModel(workoutEntity)).toDTO());
+    }
+
+    @Transactional(readOnly = true)
+    public ExerciseAnalysisDTO getExerciseAnalysis(String type, String username) {
+        List<WorkoutEntity> entities = workoutRepository.findWorkoutEntitiesByUserUsername(username);
+        ExerciseAnalysis analysis = new ExerciseAnalysis(
+                entities.stream()
+                        .filter(elem -> elem.getExercises().stream().anyMatch(e -> e.getType().equals(type)))
+                        .map(elem -> workoutMapper.entityToModel(elem)).collect(Collectors.toList()),
+                type
+        );
+        return analysis.getAnalysisDTO();
     }
 
 

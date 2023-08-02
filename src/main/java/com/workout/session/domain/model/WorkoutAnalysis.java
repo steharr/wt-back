@@ -25,18 +25,18 @@ public class WorkoutAnalysis {
 
     private Integer calculateNumberOfExercises() {
         log.info("WorkoutAnalysis::Calculating number of exercises");
-        return this.workout.getExercise().size();
+        return this.workout.getExercises().size();
     }
 
     private Long calculateAvgReps() {
         log.info("WorkoutAnalysis::Calculating average reps");
-        Long totalReps = this.workout.getExercise().stream().map(Exercise::getReps).reduce(0L, Long::sum);
+        Long totalReps = this.workout.getExercises().stream().map(Exercise::getReps).reduce(0L, Long::sum);
         return totalReps / this.numberOfExercises;
     }
 
     private BigDecimal calculateAvgWeight() {
         log.info("WorkoutAnalysis::Calculating average weight lifted");
-        BigDecimal totalWeight = this.workout.getExercise().stream().map(Exercise::getWeight).filter(Objects::nonNull).reduce(BigDecimal.ZERO, BigDecimal::add);
+        BigDecimal totalWeight = this.workout.getExercises().stream().map(Exercise::getWeight).filter(Objects::nonNull).reduce(BigDecimal.ZERO, BigDecimal::add);
         return totalWeight.divide(BigDecimal.valueOf(this.numberOfExercises), RoundingMode.HALF_UP);
     }
 

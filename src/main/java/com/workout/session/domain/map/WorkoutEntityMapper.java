@@ -25,7 +25,7 @@ public class WorkoutEntityMapper implements EntityMapper<Workout, WorkoutEntity>
 
     @Override
     public WorkoutEntity modelToEntity(Workout model) {
-        List<ExerciseEntity> exercises = model.getExercise().stream().map(exerciseMapper::modelToEntity).collect(Collectors.toList());
+        List<ExerciseEntity> exercises = model.getExercises().stream().map(exerciseMapper::modelToEntity).collect(Collectors.toList());
         WorkoutEntity entity = new WorkoutEntity();
         entity.setWorkoutId(model.getWorkoutId());
         exercises.stream().forEach(ex -> ex.setWorkout(entity));
