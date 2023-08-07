@@ -58,9 +58,9 @@ public class DevTestDataGenerator {
         Exercise SQUATS_2 = new Exercise("Squats", 5L, 5L, BigDecimal.valueOf(85));
         Exercise SQUATS_3 = new Exercise("Squats", 5L, 5L, BigDecimal.valueOf(90));
 
-        saveWorkout(LocalDateTime.now(), List.of(SQUATS_1), 4, 1L, TEST_USERNAME, workoutService);
-        saveWorkout(LocalDateTime.now(), List.of(SQUATS_2), 3, 2L, TEST_USERNAME, workoutService);
-        saveWorkout(LocalDateTime.now(), List.of(SQUATS_3), 3, 3L, TEST_USERNAME, workoutService);
+        saveWorkout(LocalDateTime.now().minusDays(3), List.of(SQUATS_1), 4, 1L, TEST_USERNAME, workoutService);
+        saveWorkout(LocalDateTime.now().minusDays(2), List.of(SQUATS_2), 3, 2L, TEST_USERNAME, workoutService);
+        saveWorkout(LocalDateTime.now().minusDays(1), List.of(SQUATS_3), 3, 3L, TEST_USERNAME, workoutService);
     }
 
     private static void saveDummyWorkouts(WorkoutService workoutService) {

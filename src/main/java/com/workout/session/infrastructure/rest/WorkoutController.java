@@ -68,7 +68,7 @@ public class WorkoutController {
         }
     }
 
-    @GetMapping("analysis/execise/{exercise}")
+    @GetMapping("analysis/exercise/{exercise}")
     public ResponseEntity<ExerciseAnalysisDTO> exerciseAnalysis(@PathVariable String exercise, Authentication a) {
         try {
             String username = a == null ? "" : a.getPrincipal().toString();
