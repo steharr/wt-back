@@ -2,6 +2,7 @@ package com.workout.session.infrastructure.rest;
 
 import com.workout.common.exception.ApplicationException;
 import com.workout.session.application.WorkoutService;
+import com.workout.session.domain.dto.ExerciseAnalysisDTO;
 import com.workout.session.domain.dto.ExerciseTypeDTO;
 import com.workout.session.domain.dto.WorkoutAnalysisDTO;
 import com.workout.session.domain.model.Workout;
@@ -56,11 +57,23 @@ public class WorkoutController {
         }
     }
 
-    @GetMapping("analysis/{id}")
-    public ResponseEntity<WorkoutAnalysisDTO> analysis(@PathVariable Long id) {
+    @GetMapping("analysis/workout/{id}")
+    public ResponseEntity<WorkoutAnalysisDTO> workoutAnalysis(@PathVariable Long id) {
         try {
             Optional<WorkoutAnalysisDTO> analysis = workoutService.getWorkoutAnalysis(id);
             return analysis.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.badRequest().build());
+        } catch (Exception e) {
+            log.error("Error retrieving data: {}", e.getMessage());
+            throw new ApplicationException(String.join(":", "Technical Error Loading Analysis", e.getMessage()));
+        }
+    }
+
+    @GetMapping("analysis/exercise/{exercise}")
+    public ResponseEntity<ExerciseAnalysisDTO> exerciseAnalysis(@PathVariable String exercise, Authentication a) {
+        try {
+            String username = a == null ? "" : a.getPrincipal().toString();
+            ExerciseAnalysisDTO analysis = workoutService.getExerciseAnalysis(exercise, username);
+            return new ResponseEntity<>(analysis, HttpStatus.OK);
         } catch (Exception e) {
             log.error("Error retrieving data: {}", e.getMessage());
             throw new ApplicationException(String.join(":", "Technical Error Loading Analysis", e.getMessage()));
