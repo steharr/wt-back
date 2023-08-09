@@ -18,12 +18,17 @@ public class ExerciseAnalysis {
     private final String exercise;
     private String comment;
 
+    private Integer lastWorkoutRating;
+
     public ExerciseAnalysis(List<Workout> workouts, String exercise) {
         this.workouts = workouts;
         this.exercise = exercise;
         getMostRecentExerciseData(exercise).ifPresent(data -> this.mostRecentExercise = data);
         this.weightProgression = this.determineWeightProgression();
         this.determineComment();
+        if (workouts.size() > 0) {
+            this.lastWorkoutRating = workoutsArrangedByLatest().get(workouts.size() - 1).getRating();
+        }
     }
 
     public Optional<Exercise> mostRecentExercise() {
@@ -34,6 +39,9 @@ public class ExerciseAnalysis {
         ExerciseAnalysisDTO analysis = new ExerciseAnalysisDTO();
         analysis.setWeightProgression(this.weightProgression.progressEnum());
         analysis.setComment(this.comment);
+        analysis.setLastWorkoutRating(this.lastWorkoutRating);
+        analysis.setLastSetsCount(this.weightProgression.sets());
+        analysis.setLastRepsCount(this.weightProgression.reps());
         return analysis;
     }
 
@@ -44,7 +52,7 @@ public class ExerciseAnalysis {
         BigDecimal lastValue = BigDecimal.ZERO;
         ProgressEnum progressEnum;
 
-        for (Workout workout : this.workouts) {
+        for (Workout workout : workoutsArrangedByLatest()) {
             Optional<Exercise> ex = filteredExercise(this.exercise, workout);
             if (ex.isPresent()) {
                 int comparison = ex.get().getWeight().compareTo(lastValue);
@@ -55,6 +63,8 @@ public class ExerciseAnalysis {
                 } else {
                     decreaseCount++;
                 }
+
+                lastValue = ex.get().getWeight();
             }
         }
 
@@ -68,10 +78,22 @@ public class ExerciseAnalysis {
             progressEnum = ProgressEnum.NA;
         }
 
-        return new ProgressionData(
-                progressEnum,
-                this.mostRecentExercise().isPresent() ?
-                        this.mostRecentExercise.getWeight() : BigDecimal.ZERO);
+        if (this.mostRecentExercise().isPresent()) {
+            return new ProgressionData(
+                    progressEnum,
+                    this.mostRecentExercise.getWeight(),
+                    this.mostRecentExercise.getSets(),
+                    this.mostRecentExercise.getReps()
+            );
+        } else {
+            return new ProgressionData(
+                    progressEnum,
+                    BigDecimal.ZERO,
+                    0L,
+                    0L
+            );
+        }
+
     }
 
     private Optional<Exercise> filteredExercise(String ex, Workout workout) {
@@ -94,15 +116,15 @@ public class ExerciseAnalysis {
 
         switch (this.weightProgression.progressEnum()) {
             case IMPROVING: {
-                text = "Your weight progression is improving for this exercise.";
+                text = "Your weight progression is <strong>improving</strong> for this exercise.";
                 break;
             }
             case DECLINING: {
-                text = "Your weight progression is declining for this exercise";
+                text = "Your weight progression is <strong>declining</strong> for this exercise";
                 break;
             }
             case NO_CHANGE: {
-                text = "Your weight progression has not changed recently for this exercise";
+                text = "Your weight progression has <strong>not changed</strong> recently for this exercise";
                 break;
             }
             default: {
@@ -113,12 +135,28 @@ public class ExerciseAnalysis {
         }
         if (this.mostRecentExercise().isPresent()) {
             text = this.addLastWeightData(text);
+            text = this.addLastRepsAndSetsData(text);
         }
         this.comment = text;
     }
 
     private String addLastWeightData(String text) {
         String lastTime = String.join(" ", "Last time you lifted:", this.mostRecentExercise.getWeight().toString(), "kg");
-        return String.join("\n", text, lastTime);
+        return String.join("<br><br>", text, lastTime);
+    }
+
+    private String addLastRepsAndSetsData(String text) {
+        String lastTime = String.join(" ", "You completed:",
+                String.join(" x ",
+                        this.weightProgression.sets().toString(),
+                        this.weightProgression.reps().toString()),
+                "reps");
+        return String.join("<br><br>", text, lastTime);
+    }
+
+    private List<Workout> workoutsArrangedByLatest() {
+        List<Workout> sortedList = new ArrayList<>(List.copyOf(this.workouts));
+        sortedList.sort(Comparator.comparing(Workout::getDate));
+        return sortedList;
     }
 }

@@ -13,6 +13,8 @@ public class ExerciseAnalysisDTO {
     private Integer ratingProgression;
     private Integer repsProgression;
     private ProgressEnum weightProgression;
-    private Integer lastRepsCount;
+    private Long lastRepsCount;
+    private Long lastSetsCount;
     private String comment;
+    private Integer lastWorkoutRating;
 }
