@@ -2,6 +2,8 @@ package com.workout;
 
 import com.workout.security.application.AccountService;
 import com.workout.security.domain.dto.AccountDetailsDTO;
+import com.workout.security.domain.model.AvatarEyesType;
+import com.workout.security.domain.model.AvatarHairType;
 import com.workout.session.application.WorkoutService;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
@@ -38,8 +40,10 @@ class WorkoutApplicationTests {
                 29,
                 "M",
                 "steharr123",
-                "abc",
-                "steharr123@gmail.com"
+                "steharr123@gmail.com",
+                AvatarEyesType.HAPPY,
+                AvatarHairType.CLASSIC_2,
+                "abc"
         ));
     }
 

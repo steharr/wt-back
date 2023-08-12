@@ -4,8 +4,12 @@ import com.workout.security.domain.dto.AccountDetailsBaseDTO;
 import com.workout.security.domain.dto.AccountDetailsDTO;
 import com.workout.security.domain.map.AccountMapper;
 import com.workout.security.domain.model.Account;
+import com.workout.security.domain.model.AvatarEyesType;
+import com.workout.security.domain.model.AvatarHairType;
 import com.workout.security.infrastructure.repository.AccountRepository;
+import com.workout.security.infrastructure.repository.AvatarRepository;
 import com.workout.security.infrastructure.repository.entity.AccountEntity;
+import com.workout.security.infrastructure.repository.entity.AvatarEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -19,6 +23,9 @@ public class AccountService implements UserDetailsService {
 
     @Autowired
     private AccountRepository accountRepository;
+
+    @Autowired
+    private AvatarRepository avatarRepository;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -55,7 +62,17 @@ public class AccountService implements UserDetailsService {
         entity.setFirstName(dto.getFirstName());
         entity.setLastName(dto.getLastName());
         entity.setUsername(dto.getUsername());
+        if (hasAvatar(dto)) {
+            AvatarEntity avatarEntity = new AvatarEntity();
+            avatarEntity.setHair(AvatarHairType.getEnumFromValue(dto.getAvatarHair()));
+            avatarEntity.setEyes(AvatarEyesType.getEnumFromValue(dto.getAvatarEyes()));
+            entity.setAvatar(avatarEntity);
+        }
         return entity;
+    }
+
+    private boolean hasAvatar(AccountDetailsDTO dto) {
+        return null != dto.getAvatarEyes() && null != dto.getAvatarHair();
     }
 
 

@@ -45,6 +45,8 @@ public class AccountMapper implements Mapper<Account, AccountEntity, AccountDeta
         dto.setFirstName(model.getAccount().getFirstName());
         dto.setLastName(model.getAccount().getLastName());
         dto.setUsername(model.getUsername());
+        dto.setAvatarHair(model.getAccount().getAvatar().getHair().getValue());
+        dto.setAvatarEyes(model.getAccount().getAvatar().getEyes().getValue());
         return dto;
     }
 }
