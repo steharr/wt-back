@@ -3,6 +3,8 @@ package com.workout.security.domain.model;
 import com.workout.common.exception.ApplicationException;
 
 import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public enum AvatarHairType {
 
@@ -31,4 +33,7 @@ public enum AvatarHairType {
                 .orElseThrow(() -> new ApplicationException("Invalid Enum!"));
     }
 
+    public static List<String> choices() {
+        return Arrays.stream(AvatarHairType.values()).map(e -> e.value).collect(Collectors.toList());
+    }
 }

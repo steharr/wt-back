@@ -4,10 +4,9 @@ import com.workout.common.exception.ApplicationException;
 import com.workout.security.application.AccountService;
 import com.workout.security.application.config.AuthProvider;
 import com.workout.security.application.config.JwtUtil;
-import com.workout.security.domain.dto.AccountDetailsBaseDTO;
-import com.workout.security.domain.dto.AccountDetailsDTO;
-import com.workout.security.domain.dto.AccountLoginDTO;
-import com.workout.security.domain.dto.JwtTokenDTO;
+import com.workout.security.domain.dto.*;
+import com.workout.security.domain.model.AvatarEyesType;
+import com.workout.security.domain.model.AvatarHairType;
 import com.workout.security.infrastructure.repository.entity.AccountEntity;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,6 +52,17 @@ public class AccountController {
         }
     }
 
+    @PatchMapping("avatar")
+    public ResponseEntity<Void> updateAvatar(@RequestBody AccountDetailsDTO update, Authentication a) {
+        try {
+            accountService.updateAvatar(update, a);
+            return ResponseEntity.ok().build();
+        } catch (Exception e) {
+            log.error(String.join(":", "Error authenticating", e.getMessage()));
+            throw new ApplicationException("Error updating user, Please try again later");
+        }
+    }
+
 
     @GetMapping("details")
     public ResponseEntity<AccountDetailsBaseDTO> details(Authentication a) {
@@ -61,6 +71,19 @@ public class AccountController {
                 return ResponseEntity.noContent().build();
             }
             return ResponseEntity.ok(accountService.loadUserDetailsByAuth(a));
+        } catch (Exception e) {
+            log.error(String.join(":", "Error viewing details", e.getMessage()));
+            throw new ApplicationException("Error viewing user, Please try again later");
+        }
+    }
+
+    @GetMapping("avatar-options")
+    public ResponseEntity<AvatarOptionsDTO> avatarOptions() {
+        try {
+            return ResponseEntity.ok(new AvatarOptionsDTO(
+                    AvatarHairType.choices(),
+                    AvatarEyesType.choices()
+            ));
         } catch (Exception e) {
             log.error(String.join(":", "Error viewing details", e.getMessage()));
             throw new ApplicationException("Error viewing user, Please try again later");

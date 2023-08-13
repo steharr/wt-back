@@ -1,5 +1,6 @@
 package com.workout.security.application;
 
+import com.workout.common.exception.ApplicationException;
 import com.workout.security.domain.dto.AccountDetailsBaseDTO;
 import com.workout.security.domain.dto.AccountDetailsDTO;
 import com.workout.security.domain.map.AccountMapper;
@@ -52,6 +53,20 @@ public class AccountService implements UserDetailsService {
         return entity;
     }
 
+    public void updateAvatar(AccountDetailsDTO update, Authentication a) {
+
+        accountRepository.findByUsername((String) a.getPrincipal()).ifPresentOrElse(existing -> {
+            AvatarEntity avatar = existing.getAvatar();
+            avatar.setEyes(AvatarEyesType.getEnumFromValue(update.getAvatarEyes()));
+            avatar.setHair(AvatarHairType.getEnumFromValue(update.getAvatarHair()));
+            existing.setAvatar(avatar);
+            accountRepository.saveAndFlush(existing);
+        }, () -> {
+            throw new ApplicationException("Error!");
+        });
+    }
+
+
     private AccountEntity transformDTOToEntity(AccountDetailsDTO dto) {
         AccountEntity entity = new AccountEntity();
         entity.setAccountType(null);
@@ -71,7 +86,29 @@ public class AccountService implements UserDetailsService {
         return entity;
     }
 
+    private AccountEntity transformBaseDTOToEntity(AccountDetailsBaseDTO dto) {
+        AccountEntity entity = new AccountEntity();
+        entity.setAccountType(null);
+        entity.setAge(dto.getAge());
+        entity.setGender(dto.getGender());
+        entity.setEmail(dto.getEmail());
+        entity.setFirstName(dto.getFirstName());
+        entity.setLastName(dto.getLastName());
+        entity.setUsername(dto.getUsername());
+        if (hasAvatar(dto)) {
+            AvatarEntity avatarEntity = new AvatarEntity();
+            avatarEntity.setHair(AvatarHairType.getEnumFromValue(dto.getAvatarHair()));
+            avatarEntity.setEyes(AvatarEyesType.getEnumFromValue(dto.getAvatarEyes()));
+            entity.setAvatar(avatarEntity);
+        }
+        return entity;
+    }
+
     private boolean hasAvatar(AccountDetailsDTO dto) {
+        return null != dto.getAvatarEyes() && null != dto.getAvatarHair();
+    }
+
+    private boolean hasAvatar(AccountDetailsBaseDTO dto) {
         return null != dto.getAvatarEyes() && null != dto.getAvatarHair();
     }
 
