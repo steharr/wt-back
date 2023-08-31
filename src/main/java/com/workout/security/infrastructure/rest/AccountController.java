@@ -58,7 +58,7 @@ public class AccountController {
             accountService.updateAvatar(update, a);
             return ResponseEntity.ok().build();
         } catch (Exception e) {
-            log.error(String.join(":", "Error authenticating", e.getMessage()));
+            log.error(String.join(":", "Error updating avatar", e.getMessage()));
             throw new ApplicationException("Error updating user, Please try again later");
         }
     }

@@ -56,7 +56,7 @@ public class AccountService implements UserDetailsService {
     public void updateAvatar(AccountDetailsDTO update, Authentication a) {
 
         accountRepository.findByUsername((String) a.getPrincipal()).ifPresentOrElse(existing -> {
-            AvatarEntity avatar = existing.getAvatar();
+            AvatarEntity avatar = null != existing.getAvatar() ? existing.getAvatar() : new AvatarEntity();
             avatar.setEyes(AvatarEyesType.getEnumFromValue(update.getAvatarEyes()));
             avatar.setHair(AvatarHairType.getEnumFromValue(update.getAvatarHair()));
             existing.setAvatar(avatar);

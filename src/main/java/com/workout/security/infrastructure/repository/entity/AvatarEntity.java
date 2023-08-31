@@ -16,11 +16,11 @@ public class AvatarEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+    private Long avatar_id;
     @Enumerated(EnumType.STRING)
     private AvatarEyesType eyes;
     @Enumerated(EnumType.STRING)
     private AvatarHairType hair;
-    
+
 
 }
