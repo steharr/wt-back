@@ -2,15 +2,19 @@ package com.workout.config.infrastructure.db.dev.data;
 
 import com.workout.security.application.AccountService;
 import com.workout.security.domain.dto.AccountDetailsDTO;
+import com.workout.security.domain.model.AvatarEyesType;
+import com.workout.security.domain.model.AvatarHairType;
 import com.workout.session.application.WorkoutService;
 import com.workout.session.domain.dto.ExerciseTypeDTO;
 import com.workout.session.domain.model.Exercise;
 import com.workout.session.domain.model.Workout;
+import lombok.extern.slf4j.Slf4j;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 
+@Slf4j
 public class DevTestDataGenerator {
 
     private static final String TEST_USERNAME = "dev";
@@ -36,6 +40,8 @@ public class DevTestDataGenerator {
                 "MALE",
                 TEST_USERNAME,
                 "dev@gmail.com",
+                AvatarEyesType.NORMAL,
+                AvatarHairType.STYLISH,
                 TEST_PASSWORD
         ));
     }

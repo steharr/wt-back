@@ -14,4 +14,6 @@ public class AccountDetailsBaseDTO {
     private String gender;
     private String username;
     private String email;
+    private String avatarEyes;
+    private String avatarHair;
 }
