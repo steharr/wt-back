@@ -67,6 +67,11 @@ public class AccountService implements UserDetailsService {
     }
 
 
+    public boolean usernameExists(String username) {
+        return accountRepository.findByUsername(username).isPresent();
+    }
+
+
     private AccountEntity transformDTOToEntity(AccountDetailsDTO dto) {
         AccountEntity entity = new AccountEntity();
         entity.setAccountType(null);

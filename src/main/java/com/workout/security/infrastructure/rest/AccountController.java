@@ -10,6 +10,7 @@ import com.workout.security.domain.model.AvatarHairType;
 import com.workout.security.infrastructure.repository.entity.AccountEntity;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -84,6 +85,16 @@ public class AccountController {
                     AvatarHairType.choices(),
                     AvatarEyesType.choices()
             ));
+        } catch (Exception e) {
+            log.error(String.join(":", "Error viewing details", e.getMessage()));
+            throw new ApplicationException("Error viewing user, Please try again later");
+        }
+    }
+
+    @GetMapping("username-exists")
+    public ResponseEntity<Boolean> usernames(@RequestParam(value = "check") String check) {
+        try {
+            return new ResponseEntity<>(accountService.usernameExists(check), HttpStatus.OK);
         } catch (Exception e) {
             log.error(String.join(":", "Error viewing details", e.getMessage()));
             throw new ApplicationException("Error viewing user, Please try again later");
