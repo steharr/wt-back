@@ -21,10 +21,13 @@ public class DataLoader implements ApplicationRunner {
     @Autowired
     AccountService accountService;
 
+    @Autowired
+    DevTestDataGenerator devTestDataGenerator;
+
     @Override
     public void run(ApplicationArguments args) throws Exception {
         log.info("Detected DEV profile: Starting ApplicationRunner to load up test data...");
-        DevTestDataGenerator.baseSetup(workoutService, accountService);
+        devTestDataGenerator.baseSetup(workoutService, accountService);
         log.info("Detected DEV profile: Completed ApplicationRunner to load up test data...");
     }
 

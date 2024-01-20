@@ -5,34 +5,41 @@ import com.workout.security.domain.dto.AccountDetailsDTO;
 import com.workout.security.domain.model.AvatarEyesType;
 import com.workout.security.domain.model.AvatarHairType;
 import com.workout.session.application.WorkoutService;
-import com.workout.session.domain.dto.ExerciseTypeDTO;
 import com.workout.session.domain.model.Exercise;
 import com.workout.session.domain.model.Workout;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 
 @Slf4j
+@Component
 public class DevTestDataGenerator {
 
     private static final String TEST_USERNAME = "dev";
     private static final String TEST_PASSWORD = "devpass123";
 
+    @Autowired
+    private JdbcTemplate jdbcTemplate;
+
     private DevTestDataGenerator() {
     }
 
 
-    public static void baseSetup(WorkoutService workoutService, AccountService accountService) {
+    public void baseSetup(WorkoutService workoutService, AccountService accountService) {
+        log.debug("DEV Test data base setup triggerred");
         createDummyUser(accountService);
-        saveWorkoutTypes(workoutService);
-//        saveDummyWorkouts(workoutService);
+        saveWorkoutTypesFromCSV();
         saveProgressionWorkouts(workoutService);
+        log.debug("DEV Test data base setup completed");
     }
 
 
-    private static void createDummyUser(AccountService accountService) {
+    private void createDummyUser(AccountService accountService) {
         accountService.save(new AccountDetailsDTO(
                 "mr",
                 "developer",
@@ -46,20 +53,21 @@ public class DevTestDataGenerator {
         ));
     }
 
-    private static void saveWorkoutTypes(WorkoutService workoutService) {
-        workoutService.saveExerciseTypes(List.of(
-                new ExerciseTypeDTO("Bench Press"),
-                new ExerciseTypeDTO("Squats"),
-                new ExerciseTypeDTO("Deadlifts"),
-                new ExerciseTypeDTO("Push Ups"),
-                new ExerciseTypeDTO("Push Ups (Kneeling)"),
-                new ExerciseTypeDTO("Shoulder Press"),
-                new ExerciseTypeDTO("Pull-ups"),
-                new ExerciseTypeDTO("Chin-ups")
-        ));
+    private void saveWorkoutTypesFromCSV() {
+        try {
+            jdbcTemplate.execute("INSERT INTO EXERCISE_TYPES (name, description, image)\n" +
+                    "SELECT\n" +
+                    "    EXERCISE_NAME,\n" +
+                    "    DESCRIPTION_URL,\n" +
+                    "    EXERCISE_IMAGE\n" +
+                    "FROM CSVREAD('classpath:exercises.csv');" +
+                    "");
+        } catch (Exception e) {
+            log.error("ERROR setting up exercises types from csv file: {}", e.getMessage());
+        }
     }
 
-    private static void saveProgressionWorkouts(WorkoutService workoutService) {
+    private void saveProgressionWorkouts(WorkoutService workoutService) {
 //        Improving examples
         Exercise SQUATS_1 = new Exercise("Squats", 5L, 5L, BigDecimal.valueOf(80));
         Exercise SQUATS_2 = new Exercise("Squats", 5L, 5L, BigDecimal.valueOf(85));
@@ -86,7 +94,7 @@ public class DevTestDataGenerator {
         saveWorkout(LocalDateTime.now().minusDays(1), List.of(DEAD_3), 3, 3L, TEST_USERNAME, workoutService);
     }
 
-    private static void saveDummyWorkouts(WorkoutService workoutService) {
+    private void saveDummyWorkouts(WorkoutService workoutService) {
         Exercise SQUAT = new Exercise("Bench Press", 5L, 5L, BigDecimal.valueOf(100));
         Exercise BENCH_PRESS = new Exercise("Bench Press", 5L, 5L, BigDecimal.valueOf(70));
         Exercise CHIN_UPS = new Exercise("Chin Up", 5L, 5L, BigDecimal.valueOf(100));
@@ -95,7 +103,7 @@ public class DevTestDataGenerator {
         saveWorkout(LocalDateTime.now(), List.of(SQUAT, BENCH_PRESS), 3, 3L, TEST_USERNAME, workoutService);
     }
 
-    private static void saveWorkout(LocalDateTime date, List<Exercise> exercises, Integer rating, Long id, String username, WorkoutService workoutService) {
+    private void saveWorkout(LocalDateTime date, List<Exercise> exercises, Integer rating, Long id, String username, WorkoutService workoutService) {
         var w = new Workout();
         w.setDate(date);
         w.setExercises(exercises);

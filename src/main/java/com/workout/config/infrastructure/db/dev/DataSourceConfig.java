@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.jdbc.DataSourceBuilder;
 import org.springframework.context.annotation.*;
+import org.springframework.jdbc.core.JdbcTemplate;
 
 import javax.sql.DataSource;
 
@@ -33,6 +34,12 @@ public class DataSourceConfig {
         dataSourceBuilder.username(user);
         dataSourceBuilder.password(pw);
         return dataSourceBuilder.build();
+    }
+
+
+    @Bean
+    public JdbcTemplate jdbcTemplate(@Qualifier("h2DataSource") DataSource dataSource) {
+        return new JdbcTemplate(dataSource);
     }
 }
 

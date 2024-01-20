@@ -9,5 +9,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class ExerciseTypeDTO {
     private String name;
-//    TODO: add properties
+    private String descriptionUrl;
+    private String imageUrl;
 }
