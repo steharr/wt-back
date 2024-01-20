@@ -10,9 +10,15 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class ExceriseTypeEntity {
+public class ExerciseTypeEntity {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private Long exerciseTypeId;
+    @Column(name = "name")
     private String name;
+    @Column(name = "description")
+    private String descriptionUrl;
+    @Column(name = "image")
+    private String imageUrl;
 }

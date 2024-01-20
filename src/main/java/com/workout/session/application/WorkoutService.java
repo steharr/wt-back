@@ -14,8 +14,8 @@ import com.workout.session.domain.model.WorkoutAnalysis;
 import com.workout.session.infrastructure.repository.ExerciseRepository;
 import com.workout.session.infrastructure.repository.ExerciseTypeRepository;
 import com.workout.session.infrastructure.repository.WorkoutRepository;
-import com.workout.session.infrastructure.repository.entity.ExceriseTypeEntity;
 import com.workout.session.infrastructure.repository.entity.ExerciseEntity;
+import com.workout.session.infrastructure.repository.entity.ExerciseTypeEntity;
 import com.workout.session.infrastructure.repository.entity.WorkoutEntity;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -101,16 +101,17 @@ public class WorkoutService {
     @Transactional
     public List<ExerciseTypeDTO> getExcerisesTypes() {
         log.info("Getting types entities...begin");
-        List<ExceriseTypeEntity> entities = exerciseTypeRepository.findAll();
+        List<ExerciseTypeEntity> entities = exerciseTypeRepository.findAll();
+        entities.sort((e1, e2) -> e1.getName().compareTo(e2.getName()));
         log.info("Getting types entities...complete");
-        return entities.stream().map(ent -> new ExerciseTypeDTO(ent.getName())).collect(Collectors.toList());
+        return entities.stream().map(ent -> new ExerciseTypeDTO(ent.getName(), ent.getDescriptionUrl(), ent.getImageUrl())).collect(Collectors.toList());
     }
 
     @Transactional
     public void saveExerciseTypes(List<ExerciseTypeDTO> dtos) {
 
-        List<ExceriseTypeEntity> entities = dtos.stream().map(elem -> {
-            var ent = new ExceriseTypeEntity();
+        List<ExerciseTypeEntity> entities = dtos.stream().map(elem -> {
+            var ent = new ExerciseTypeEntity();
             ent.setName(elem.getName());
             return ent;
         }).collect(Collectors.toList());
